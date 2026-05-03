@@ -163,6 +163,28 @@
   #hamburger.open span:nth-child(2) { opacity: 0; }
   #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
+  /* ---- OVERLAY CLOSE BUTTON ---- */
+  #overlay-close {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: none;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.7);
+    transition: border-color 0.3s, color 0.3s, transform 0.3s;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.3s, border-color 0.3s, color 0.3s;
+  }
+  #overlay-menu.open #overlay-close { opacity: 1; }
+  #overlay-close:hover { border-color: #fff; color: #fff; transform: translateX(-50%) scale(1.1); }
+
   /* ---- OVERLAY MENU ---- */
   #overlay-menu {
     position: fixed; inset: 0; z-index: 150;
@@ -533,6 +555,12 @@
   <a href="#outline" class="overlay-menu-link">Skills</a>
   <a href="#works" class="overlay-menu-link">Works</a>
   <a href="#contact" class="overlay-menu-link">Contact</a>
+  <button id="overlay-close" aria-label="閉じる">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <line x1="4" y1="4" x2="24" y2="24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <line x1="24" y1="4" x2="4" y2="24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
 </div>
 
 <!-- SIDE NAV (PC) -->
@@ -907,6 +935,11 @@ dot.style.opacity = '1';
       ham.classList.remove('open');
       overlay.classList.remove('open');
     });
+  });
+
+  document.getElementById('overlay-close').addEventListener('click', () => {
+    ham.classList.remove('open');
+    overlay.classList.remove('open');
   });
 
   /* ---- SMOOTH SCROLL ---- */
