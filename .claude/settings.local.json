@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(identify /Users/nobu/Desktop/claude/logo.png)",
+      "Bash(python3 -)"
+    ]
+  }
+}

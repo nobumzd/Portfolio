@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', sans-serif;
+            font-weight: 700;
+            background: #fff;
+            color: #111;
+            max-width: 1920px;
+            margin: 0 auto;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ======= Custom Cursor ======= */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #111;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.15s ease;
+            will-change: left, top;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 44px;
+            height: 44px;
+            border: 2px solid rgba(17,17,17,0.35);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            will-change: left, top;
+        }
+
+        .cursor-ripple {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9997;
+            width: 64px;
+            height: 64px;
+            background: rgba(17,17,17,0.1);
+            transform: translate(-50%, -50%) scale(0);
+            animation: cursorRipple 0.7s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+        }
+
+        @keyframes cursorRipple {
+            0%   { transform: translate(-50%,-50%) scale(0.2); opacity: 0.7; }
+            35%  { transform: translate(-50%,-50%) scale(0.1); opacity: 0.9; }
+            100% { transform: translate(-50%,-50%) scale(3.2); opacity: 0; }
+        }
+
+        /* ======= Header ======= */
+        #header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 28px 56px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 500;
+            transition: padding 1s ease, background 1s ease, border-color 1s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        #header.scrolled {
+            padding: 18px 56px;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-color: rgba(17,17,17,0.08);
+        }
+
+        .header-logo {
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            color: #111;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-logo-img {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 900;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .header-logo-img img { width: 100%; height: 100%; object-fit: contain; }
+
+        .header-nav {
+            display: flex;
+            gap: 44px;
+            list-style: none;
+        }
+
+        .header-nav a {
+            color: #111;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .header-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: #111;
+            transition: width 1s ease;
+        }
+
+        .header-nav a:hover::after { width: 100%; }
+
+        /* ======= Hamburger ======= */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            padding: 6px;
+            z-index: 600;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: #111;
+            border-radius: 2px;
+            transition: transform 1s ease, opacity 1s ease, background 1s ease;
+        }
+
+        .hamburger.active span { background: #fff; }
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* ======= Mobile Menu Overlay ======= */
+        #mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: #111;
+            z-index: 550;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 48px;
+            gap: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        #mobile-menu.active { opacity: 1; pointer-events: all; }
+
+        .mm-num {
+            font-size: 10px;
+            color: #444;
+            letter-spacing: 0.22em;
+            margin-bottom: 2px;
+            margin-top: 28px;
+        }
+
+        .mm-num:first-child { margin-top: 0; }
+
+        #mobile-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: clamp(44px, 10vw, 72px);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            transition: opacity 1s ease, transform 1s ease;
+            display: block;
+        }
+
+        #mobile-menu a:hover { opacity: 0.35; transform: translateX(14px); }
+
+        /* ======= PC Side Menu ======= */
+        #side-menu {
+            position: fixed;
+            right: 44px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 400;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        #side-menu.visible { opacity: 1; pointer-events: all; }
+
+        .side-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .side-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #111;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: opacity 1s ease, transform 1s ease;
+            white-space: nowrap;
+        }
+
+        .side-item:hover .side-label,
+        .side-item.active .side-label { opacity: 1; transform: translateX(0); }
+
+        .side-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px solid #111;
+            background: transparent;
+            flex-shrink: 0;
+            transition: background 1s ease, transform 1s ease;
+        }
+
+        .side-item.active .side-dot,
+        .side-item:hover .side-dot { background: #111; transform: scale(1.6); }
+
+        /* ======= Mobile Bottom Menu ======= */
+        #bottom-menu {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            z-index: 400;
+            background: rgba(17,17,17,0.93);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 20px;
+            padding: 16px 28px;
+            display: none;
+            gap: 32px;
+            opacity: 0;
+            transition: transform 1s ease, opacity 1s ease;
+            white-space: nowrap;
+        }
+
+        #bottom-menu.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        #bottom-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        /* ======= Reveal Animations ======= */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .reveal-x {
+            opacity: 0;
+            transform: translateX(-36px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .reveal-x.visible { opacity: 1; transform: translateX(0); }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.94);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+        .d1 { transition-delay: 0.1s; }
+        .d2 { transition-delay: 0.2s; }
+        .d3 { transition-delay: 0.3s; }
+        .d4 { transition-delay: 0.4s; }
+        .d5 { transition-delay: 0.5s; }
+
+        /* ======= Hero ======= */
+        #hero {
+            min-height: 100vh;
+            min-height: 100svh;
+            padding: 120px 80px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-logo-wrap {
+            position: absolute;
+            top: 120px;
+            left: 80px;
+        }
+
+        .hero-logo-box {
+            width: 160px;
+            height: 160px;
+            border-radius: 20px;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #bbb;
+            letter-spacing: 0.1em;
+            overflow: hidden;
+            transition: transform 1s ease;
+        }
+
+        .hero-logo-box:hover { transform: scale(1.04) rotate(-1deg); }
+        .hero-logo-box img { width: 100%; height: 100%; object-fit: contain; }
+
+        .hero-eyebrow {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(52px, 10vw, 148px);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
+            color: #111;
+            margin-bottom: 32px;
+        }
+
+        .hero-desc {
+            max-width: 440px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #666;
+            line-height: 1.85;
+            letter-spacing: 0.02em;
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 48px;
+            right: 80px;
+            writing-mode: vertical-rl;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hero-scroll-line {
+            width: 1px;
+            height: 64px;
+            background: #e8e8e8;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%; left: 0;
+            width: 100%; height: 100%;
+            background: #888;
+            animation: scrollAnim 2.2s ease-in-out infinite;
+        }
+
+        @keyframes scrollAnim {
+            0%   { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        .hero-bg-text {
+            position: absolute;
+            bottom: -40px;
+            right: -20px;
+            font-size: clamp(100px, 20vw, 320px);
+            font-weight: 900;
+            color: rgba(17,17,17,0.04);
+            letter-spacing: -0.04em;
+            line-height: 1;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
+
+        #hero > *:not(.hero-bg-text) { position: relative; z-index: 1; }
+
+        /* ======= Parallax ======= */
+        .parallax-wrap { padding: 0 80px; }
+
+        .parallax-block {
+            border-radius: 20px;
+            height: 520px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .parallax-inner {
+            position: absolute;
+            inset: -80px 0;
+            background-size: cover;
+            background-position: center;
+            will-change: transform;
+        }
+
+        .parallax-caption {
+            position: absolute;
+            bottom: 32px;
+            left: 36px; right: 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .par-title {
+            font-size: clamp(20px, 3.5vw, 44px);
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+        }
+
+        .par-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            opacity: 0.6;
+        }
+
+        /* ======= Section Base ======= */
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 80px;
+        }
+
+        .sec-tag {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 14px;
+        }
+
+        .sec-title {
+            font-size: clamp(40px, 6vw, 88px);
+            font-weight: 900;
+            letter-spacing: -0.025em;
+            line-height: 0.92;
+            margin-bottom: 16px;
+        }
+
+        .sec-bar {
+            width: 48px;
+            height: 3px;
+            background: #111;
+            border-radius: 2px;
+            margin-bottom: 56px;
+        }
+
+        /* ======= About ======= */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .about-text {
+            font-size: 16px;
+            line-height: 2.1;
+            font-weight: 700;
+            color: #555;
+        }
+
+        .about-cards { display: flex; flex-direction: column; gap: 14px; }
+
+        .about-card {
+            background: #f5f5f5;
+            border-radius: 20px;
+            padding: 26px 30px;
+            transition: background 1s ease, transform 1s ease;
+            cursor: default;
+        }
+
+        .about-card:hover { background: #111; transform: translateX(10px); }
+        .about-card:hover .card-label { color: #555; }
+        .about-card:hover .card-value { color: #fff; }
+
+        .card-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 5px;
+            transition: color 1s ease;
+        }
+
+        .card-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: #111;
+            transition: color 1s ease;
+        }
+
+        /* ======= Works ======= */
+        .works-outer {
+            margin: 0 40px;
+            background: #f5f5f5;
+            border-radius: 20px;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .work-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 1s ease, box-shadow 1s ease;
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.09);
+        }
+
+        .work-thumb {
+            aspect-ratio: 4/3;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-thumb-fill {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            color: #bbb;
+            transition: transform 1s ease;
+        }
+
+        .work-card:hover .work-thumb-fill { transform: scale(1.06); }
+
+        .work-body { padding: 26px 26px 30px; }
+
+        .work-cat {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 7px;
+        }
+
+        .work-name {
+            font-size: 18px;
+            font-weight: 900;
+            color: #111;
+            line-height: 1.3;
+        }
+
+        .work-year {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ccc;
+            margin-top: 6px;
+        }
+
+        /* ======= Contact ======= */
+        .contact-inner { text-align: center; }
+
+        .contact-note {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 12px;
+        }
+
+        .contact-email {
+            font-size: clamp(28px, 5vw, 68px);
+            font-weight: 900;
+            letter-spacing: -0.01em;
+            color: #111;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            margin: 20px 0 52px;
+        }
+
+        .contact-email::after {
+            content: '';
+            position: absolute;
+            bottom: -4px; left: 0;
+            width: 0; height: 3px;
+            background: #111;
+            transition: width 1s ease;
+        }
+
+        .contact-email:hover::after { width: 100%; }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            padding: 20px 48px;
+            border-radius: 20px;
+            transition: background 1s ease, transform 1s ease;
+        }
+
+        .contact-btn:hover { background: #2a2a2a; transform: scale(1.04); }
+
+        /* ======= Footer ======= */
+        footer {
+            border-top: 1px solid #ebebeb;
+            padding: 36px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo { font-size: 17px; font-weight: 900; letter-spacing: 0.05em; }
+
+        .footer-copy {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ccc;
+            letter-spacing: 0.06em;
+        }
+
+        /* ======= Tablet ======= */
+        @media (max-width: 1024px) {
+            #header          { padding: 24px 40px; }
+            #header.scrolled { padding: 16px 40px; }
+            #side-menu       { display: none; }
+
+            #hero              { padding: 100px 40px 80px; }
+            .hero-logo-wrap    { top: 100px; left: 40px; }
+            .hero-scroll       { right: 40px; }
+            .parallax-wrap     { padding: 0 40px; }
+            .parallax-block    { height: 400px; }
+            .section-inner     { padding: 100px 40px; }
+            .about-grid        { gap: 48px; }
+            .works-grid        { grid-template-columns: repeat(2, 1fr); }
+            .works-outer       { margin: 0 20px; }
+            footer             { padding: 32px 40px; }
+        }
+
+        /* ======= Mobile ======= */
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            #cursor, #cursor-follower { display: none; }
+
+            #header          { padding: 18px 24px; }
+            #header.scrolled { padding: 14px 24px; }
+            .header-nav      { display: none; }
+            .hamburger       { display: flex; }
+            #side-menu       { display: none; }
+            #bottom-menu     { display: flex; }
+
+            #hero           { padding: 80px 24px 80px; }
+            .hero-logo-wrap { top: 80px; left: 24px; }
+            .hero-logo-box  { width: 100px; height: 100px; }
+            .hero-scroll    { right: 24px; bottom: 32px; }
+            .hero-bg-text   { font-size: 30vw; right: -10px; }
+
+            .parallax-wrap  { padding: 0 20px; }
+            .parallax-block { height: 260px; }
+
+            .section-inner  { padding: 80px 24px; }
+            .about-grid     { grid-template-columns: 1fr; gap: 40px; }
+
+            .works-outer    { margin: 0 12px; border-radius: 20px; }
+            .works-grid     { grid-template-columns: 1fr; }
+
+            footer {
+                padding: 28px 24px;
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-follower"></div>
+
+<!-- ===== Header ===== -->
+<header id="header">
+    <a href="#hero" class="header-logo">
+        <div class="header-logo-img">
+            <img src="logo.png" alt="Logo" onerror="this.parentElement.textContent='S'">
+        </div>
+        STUDIO.
+    </a>
+    <nav>
+        <ul class="header-nav">
+            <li><a href="#about">About</a></li>
+            <li><a href="#works">Works</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="hamburger" id="hamburger" aria-label="メニュー">
+        <span></span><span></span><span></span>
+    </div>
+</header>
+
+<!-- ===== Mobile Overlay Menu ===== -->
+<div id="mobile-menu">
+    <div class="mm-num">01</div>
+    <a href="#about" class="menu-link">About</a>
+    <div class="mm-num">02</div>
+    <a href="#works" class="menu-link">Works</a>
+    <div class="mm-num">03</div>
+    <a href="#contact" class="menu-link">Contact</a>
+</div>
+
+<!-- ===== PC Side Menu ===== -->
+<nav id="side-menu" aria-label="サイドナビ">
+    <a href="#hero"    class="side-item" data-section="hero">
+        <span class="side-label">Top</span><span class="side-dot"></span>
+    </a>
+    <a href="#about"   class="side-item" data-section="about">
+        <span class="side-label">About</span><span class="side-dot"></span>
+    </a>
+    <a href="#works"   class="side-item" data-section="works">
+        <span class="side-label">Works</span><span class="side-dot"></span>
+    </a>
+    <a href="#contact" class="side-item" data-section="contact">
+        <span class="side-label">Contact</span><span class="side-dot"></span>
+    </a>
+</nav>
+
+<!-- ===== Mobile Bottom Menu ===== -->
+<nav id="bottom-menu" aria-label="ボトムナビ">
+    <a href="#about">About</a>
+    <a href="#works">Works</a>
+    <a href="#contact">Contact</a>
+</nav>
+
+<main>
+
+    <!-- ===== Hero ===== -->
+    <section id="hero">
+        <div class="hero-logo-wrap">
+            <div class="hero-logo-box reveal">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.textContent='LOGO'">
+            </div>
+        </div>
+
+        <div class="hero-bg-text" aria-hidden="true">WORK</div>
+
+        <p class="hero-eyebrow reveal d1">Creative Portfolio</p>
+        <h1 class="hero-title reveal d2">DESIGN<br>&amp; CODE</h1>
+        <p class="hero-desc reveal d3">
+            アイデアをかたちに。<br>
+            Webデザインと開発で、あなたのビジョンを実現します。
+        </p>
+
+        <div class="hero-scroll reveal d4" aria-hidden="true">
+            <div class="hero-scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- Parallax 1 -->
+    <div class="parallax-wrap reveal">
+        <div class="parallax-block">
+            <div class="parallax-inner" id="par1"
+                 style="background: linear-gradient(135deg, #111 0%, #2a2a2a 40%, #555 100%);"></div>
+            <div class="parallax-caption">
+                <div class="par-title">Selected<br>Works 2024</div>
+                <div class="par-tag">Visual / Motion</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== About ===== -->
+    <section id="about">
+        <div class="section-inner">
+            <p class="sec-tag reveal">01 — About</p>
+            <h2 class="sec-title reveal d1">Outline</h2>
+            <div class="sec-bar reveal d2"></div>
+
+            <div class="about-grid">
+                <p class="about-text reveal-x">
+                    デザインとコードで、アイデアを形にします。<br><br>
+                    Webデザインからブランディング、映像制作まで幅広いクリエイティブワークに取り組んでいます。ユーザー体験を重視したデザインと、最新の技術を組み合わせた制作を行っています。<br><br>
+                    クライアントのビジョンを丁寧にヒアリングし、期待を超えるアウトプットをお届けします。
+                </p>
+                <div class="about-cards">
+                    <div class="about-card reveal d1">
+                        <div class="card-label">Name</div>
+                        <div class="card-value">Your Name</div>
+                    </div>
+                    <div class="about-card reveal d2">
+                        <div class="card-label">Role</div>
+                        <div class="card-value">Designer &amp; Developer</div>
+                    </div>
+                    <div class="about-card reveal d3">
+                        <div class="card-label">Location</div>
+                        <div class="card-value">Tokyo, Japan</div>
+                    </div>
+                    <div class="about-card reveal d4">
+                        <div class="card-label">Skills</div>
+                        <div class="card-value">Web / Motion / UI / Brand</div>
+                    </div>
+                    <div class="about-card reveal d5">
+                        <div class="card-label">Available</div>
+                        <div class="card-value">Freelance / Collaboration</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parallax 2 -->
+    <div class="parallax-wrap reveal">
+        <div class="parallax-block">
+            <div class="parallax-inner" id="par2"
+                 style="background: linear-gradient(225deg, #1a1a1a 0%, #3a3a3a 60%, #888 100%);"></div>
+            <div class="parallax-caption">
+                <div class="par-title">Project<br>Showcase</div>
+                <div class="par-tag">2022 — 2024</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Works ===== -->
+    <section id="works" style="padding: 0;">
+        <div class="works-outer">
+            <div class="section-inner">
+                <p class="sec-tag reveal">02 — Works</p>
+                <h2 class="sec-title reveal d1">Portfolio</h2>
+                <div class="sec-bar reveal d2"></div>
+
+                <div class="works-grid">
+                    <div class="work-card reveal-scale d1">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#e4e4e4,#cacaca)">WORK 01</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">Web Design</div>
+                            <div class="work-name">Project Title One</div>
+                            <div class="work-year">2024</div>
+                        </div>
+                    </div>
+                    <div class="work-card reveal-scale d2">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#d4d4d4,#bababa)">WORK 02</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">Motion</div>
+                            <div class="work-name">Project Title Two</div>
+                            <div class="work-year">2024</div>
+                        </div>
+                    </div>
+                    <div class="work-card reveal-scale d3">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#c4c4c4,#aaaaaa)">WORK 03</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">Branding</div>
+                            <div class="work-name">Project Title Three</div>
+                            <div class="work-year">2024</div>
+                        </div>
+                    </div>
+                    <div class="work-card reveal-scale d1">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#eaeaea,#d0d0d0)">WORK 04</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">UI / UX</div>
+                            <div class="work-name">Project Title Four</div>
+                            <div class="work-year">2023</div>
+                        </div>
+                    </div>
+                    <div class="work-card reveal-scale d2">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#dcdcdc,#c2c2c2)">WORK 05</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">Photography</div>
+                            <div class="work-name">Project Title Five</div>
+                            <div class="work-year">2023</div>
+                        </div>
+                    </div>
+                    <div class="work-card reveal-scale d3">
+                        <div class="work-thumb">
+                            <div class="work-thumb-fill" style="background:linear-gradient(135deg,#c8c8c8,#aeaeae)">WORK 06</div>
+                        </div>
+                        <div class="work-body">
+                            <div class="work-cat">Direction</div>
+                            <div class="work-name">Project Title Six</div>
+                            <div class="work-year">2022</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Contact ===== -->
+    <section id="contact">
+        <div class="section-inner contact-inner">
+            <p class="sec-tag reveal">03 — Contact</p>
+            <h2 class="sec-title reveal d1">Get in Touch</h2>
+            <div class="sec-bar reveal d2" style="margin: 0 auto 56px;"></div>
+
+            <p class="contact-note reveal d3">お気軽にご連絡ください</p>
+            <a href="mailto:hello@example.com" class="contact-email reveal d3">hello@example.com</a>
+            <div>
+                <a href="mailto:hello@example.com" class="contact-btn reveal d4">
+                    Send Message
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <span class="footer-logo">STUDIO.</span>
+    <span class="footer-copy">© 2024 Your Name. All rights reserved.</span>
+</footer>
+
+<script>
+(function () {
+    'use strict';
+
+    /* ===== Custom Cursor ===== */
+    const dot    = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-follower');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+    });
+
+    (function tick() {
+        rx += (mx - rx) * 0.1;
+        ry += (my - ry) * 0.1;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(tick);
+    })();
+
+    document.addEventListener('click', e => {
+        dot.style.transform = 'translate(-50%,-50%) scale(0.2)';
+        setTimeout(() => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; }, 200);
+
+        const r = document.createElement('div');
+        r.className = 'cursor-ripple';
+        r.style.left = e.clientX + 'px';
+        r.style.top  = e.clientY + 'px';
+        document.body.appendChild(r);
+        r.addEventListener('animationend', () => r.remove());
+    });
+
+    /* ===== Hamburger ===== */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        });
+    });
+
+    /* ===== Scroll ===== */
+    const header      = document.getElementById('header');
+    const sideMenu    = document.getElementById('side-menu');
+    const bottomMenu  = document.getElementById('bottom-menu');
+    const sectionIds  = ['hero', 'about', 'works', 'contact'];
+
+    function onScroll() {
+        const sy = window.scrollY;
+        const mobile = window.innerWidth <= 768;
+
+        header.classList.toggle('scrolled', sy > 60);
+
+        if (!mobile) sideMenu.classList.toggle('visible', sy > 280);
+        if (mobile)  bottomMenu.classList.toggle('visible', sy > 180);
+
+        let active = 'hero';
+        sectionIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.5) active = id;
+        });
+
+        document.querySelectorAll('.side-item').forEach(item => {
+            item.classList.toggle('active', item.dataset.section === active);
+        });
+
+        updateParallax();
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+
+    /* ===== Parallax ===== */
+    function updateParallax() {
+        document.querySelectorAll('.parallax-block').forEach(block => {
+            const inner = block.querySelector('.parallax-inner');
+            if (!inner) return;
+            const rect   = block.getBoundingClientRect();
+            const center = rect.top + rect.height / 2 - window.innerHeight / 2;
+            inner.style.transform = 'translateY(' + (center * 0.28) + 'px)';
+        });
+    }
+
+    /* ===== Scroll Reveal ===== */
+    const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .reveal-x, .reveal-scale').forEach(el => obs.observe(el));
+
+    // Hero reveals on load
+    document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 200 + i * 130);
+    });
+
+    onScroll();
+})();
+</script>
+</body>
+</html>
