@@ -207,6 +207,9 @@
   #overlay-menu.open .overlay-menu-link:nth-child(3) { transition-delay: 0.3s; }
   #overlay-menu.open .overlay-menu-link:nth-child(4) { transition-delay: 0.4s; }
   .overlay-menu-link:hover { color: var(--accent); }
+  @media (prefers-color-scheme: dark) {
+    .overlay-menu-link { color: var(--text); }
+  }
 
   /* ---- MOBILE BOTTOM NAV ---- */
   #mobile-bottom-nav {
