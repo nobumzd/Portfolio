@@ -371,6 +371,22 @@
     transition: opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s;
   }
   .about-meta.in { opacity: 1; transform: translateX(0); }
+  .about-rocket-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    mix-blend-mode: multiply;
+    filter: brightness(1.3) saturate(1.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    .about-rocket-video { mix-blend-mode: screen; filter: none; }
+  }
+  @media (max-width: 1024px) {
+    .about-rocket-video {
+      width: 50vw;
+      margin: 0 auto;
+    }
+  }
   .meta-item { border-top: 0.5px solid var(--border); padding-top: 16px; }
   .meta-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent2); margin-bottom: 6px; }
   .meta-value { font-size: 0.9rem; }
@@ -631,22 +647,10 @@
       <p>受賞歴・展示歴など、実績についてはお気軽にお問い合わせください。</p>
     </div>
     <div class="about-meta">
-      <div class="meta-item">
-        <p class="meta-label">拠点</p>
-        <p class="meta-value">東京, 日本</p>
-      </div>
-      <div class="meta-item">
-        <p class="meta-label">専門分野</p>
-        <p class="meta-value">UI/UX Design · Brand Identity</p>
-      </div>
-      <div class="meta-item">
-        <p class="meta-label">使用ツール</p>
-        <p class="meta-value">Figma · After Effects · Blender</p>
-      </div>
-      <div class="meta-item">
-        <p class="meta-label">活動年数</p>
-        <p class="meta-value">10+ Years</p>
-      </div>
+      <video class="about-rocket-video" autoplay loop muted playsinline>
+        <source src="movie/rocket_transparent.webm" type="video/webm">
+        <source src="movie/rocket_transparent.mov" type="video/mp4">
+      </video>
     </div>
   </div>
 </section>
