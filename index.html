@@ -229,6 +229,9 @@
     transition: color 0.3s;
   }
   .mob-nav-link:hover, .mob-nav-link.active { color: var(--bg); }
+  @media (prefers-color-scheme: dark) {
+    .mob-nav-link:hover, .mob-nav-link.active { color: var(--text); }
+  }
 
   /* ---- SECTIONS ---- */
   .section {
@@ -519,7 +522,7 @@
 
     .section { padding: 64px 24px; }
     #hero { padding: 100px 24px 80px; }
-    .hero-scroll-hint { left: 24px; }
+    .hero-scroll-hint { left: 50%; transform: translateX(-50%); }
 
     .skills-grid { grid-template-columns: 1fr; }
     .works-grid { grid-template-columns: 1fr; }
