@@ -969,38 +969,22 @@ dot.style.opacity = '1';
   const ham     = document.getElementById('hamburger');
   const overlay = document.getElementById('overlay-menu');
 
-  // iOSビューポートロック対策
-  function lockScroll() {
-    const scrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    document.body.style.top = `-${scrollY}px`;
-  }
-  function unlockScroll() {
-    const scrollY = Math.abs(parseInt(document.body.style.top || '0'));
-    document.body.style.position = '';
-    document.body.style.width = '';
-    document.body.style.top = '';
-    window.scrollTo(0, scrollY);
-  }
-
   ham.addEventListener('click', () => {
-    const isOpen = ham.classList.toggle('open');
+    ham.classList.toggle('open');
     overlay.classList.toggle('open');
-    isOpen ? lockScroll() : unlockScroll();
   });
-
-  function closeOverlay() {
-    ham.classList.remove('open');
-    overlay.classList.remove('open');
-    unlockScroll();
-  }
 
   overlay.querySelectorAll('.overlay-menu-link').forEach(link => {
-    link.addEventListener('click', closeOverlay);
+    link.addEventListener('click', () => {
+      ham.classList.remove('open');
+      overlay.classList.remove('open');
+    });
   });
 
-  document.getElementById('overlay-close').addEventListener('click', closeOverlay);
+  document.getElementById('overlay-close').addEventListener('click', () => {
+    ham.classList.remove('open');
+    overlay.classList.remove('open');
+  });
 
   /* ---- SMOOTH SCROLL ---- */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
