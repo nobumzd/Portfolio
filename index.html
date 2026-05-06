@@ -224,12 +224,16 @@
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px) scale(0.7);
     z-index: 100;
     background: rgba(5,10,28,0.65); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid transparent;
     border-radius: 999px;
     padding: 12px 28px;
     gap: 28px;
     transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
   }
   #mobile-bottom-nav.visible { transform: translateX(-50%) translateY(0) scale(1); }
+  @media (prefers-color-scheme: dark) {
+    #mobile-bottom-nav { border-color: var(--section-bg); }
+  }
   .mob-nav-link {
     font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase;
     color: rgba(232,226,218,0.6); text-decoration: none;
