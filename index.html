@@ -24,6 +24,8 @@
     --transition: 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
     --logo-color: #0d1b3e;
     --header-scrolled-bg: rgba(238,241,247,0.65);
+    --section-bg: rgba(226,232,244,0.65);
+    --section-blur: 20px;
     --overlay-bg: rgba(5,10,28,0.65);
     --cursor-color: #2e4a72;
     --cursor-bubble-color: rgba(91,127,166,0.4);
@@ -41,6 +43,8 @@
       --border: rgba(120,160,220,0.12);
       --logo-color: #d6e4f5;
       --header-scrolled-bg: rgba(8,13,26,0.65);
+      --section-bg: rgba(14,22,40,0.25);
+      --section-blur: 10px;
       --overlay-bg: rgba(3,5,14,0.65);
       --cursor-color: #7aa3cc;
       --cursor-bubble-color: rgba(122,163,204,0.35);
@@ -399,7 +403,10 @@
   .meta-value { font-size: 0.9rem; }
 
   /* ---- SKILLS / OUTLINE ---- */
-  #outline { background: var(--bg2); border-radius: var(--radius); }
+  #outline {
+    background: var(--section-bg); border-radius: var(--radius);
+    backdrop-filter: blur(var(--section-blur)); -webkit-backdrop-filter: blur(var(--section-blur));
+  }
   .skills-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
     margin-top: 40px;
@@ -454,7 +461,10 @@
   .work-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
 
   /* ---- CONTACT ---- */
-  #contact { background: var(--bg2); border-radius: var(--radius); text-align: center; }
+  #contact {
+    background: var(--section-bg); border-radius: var(--radius); text-align: center;
+    backdrop-filter: blur(var(--section-blur)); -webkit-backdrop-filter: blur(var(--section-blur));
+  }
   .contact-body {
     max-width: 520px; margin: 0 auto;
     opacity: 0; transform: translateY(16px);
