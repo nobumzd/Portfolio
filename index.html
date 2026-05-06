@@ -1149,9 +1149,11 @@ dot.style.opacity = '1';
     }
     el.style.opacity = '1';
 
-    // スクロールより0.35倍遅めに動く（1000px下からスタート）
+    // スクロールより0.35倍遅めに動く（モバイルは300px、PCは1000px下からスタート）
+    const isMobile = window.innerWidth <= 768;
+    const startOffset = isMobile ? 300 : 1000;
     const progress = sy - showStart;
-    el.style.transform = `translateY(${1000 - progress * 0.35}px)`;
+    el.style.transform = `translateY(${startOffset - progress * 0.35}px)`;
   }
 
   window.addEventListener('scroll', update, { passive: true });
