@@ -513,6 +513,26 @@
   }
 
   /* ---- STARS (dark mode only) ---- */
+  /* ---- CLAY EARTH PARALLAX ---- */
+  #clay-earth-parallax {
+    position: fixed;
+    /* コンテンツ(max-width:900px)左端 = 50% - 450px を右端として配置 */
+    left: calc(50% - 450px - 25vw);
+    top: 0;
+    width: 45vw;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    will-change: transform;
+  }
+  #clay-earth-parallax video {
+    width: 100%; height: auto; display: block;
+  }
+  @media (max-width: 768px) {
+    #clay-earth-parallax { width: 70vw; left: -20vw; }
+  }
+
   #stars-canvas {
     position: fixed; top: 0; left: 0;
     width: 100%; height: 100%;
@@ -554,6 +574,12 @@
 
 <!-- STARS CANVAS (dark mode) -->
 <canvas id="stars-canvas" aria-hidden="true"></canvas>
+<div id="clay-earth-parallax" aria-hidden="true">
+  <video autoplay loop muted playsinline>
+    <source src="movie/clay_earth_transparent.mov" type='video/mp4; codecs="hvc1"'>
+    <source src="movie/clay_earth_transparent.webm" type="video/webm">
+  </video>
+</div>
 
 <!-- CURSOR -->
 <div id="cursor-dot"><svg width="18" height="21" viewBox="0 0 6 7" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M0.688596 2.41761C0.671035 1.10136 1.65267 0.0190701 2.88101 0.000247829C4.10932 -0.0185399 5.11931 1.03325 5.13687 2.34948L5.16652 4.57743C5.17861 4.57663 5.1908 4.57615 5.20304 4.57596C5.62591 4.56949 5.97361 4.93153 5.97965 5.38466L6 6.90837L0.0204272 7L7.9907e-05 5.47629C-0.00579193 5.03628 0.312665 4.6723 0.718293 4.64564L0.688596 2.41761ZM2.29404 2.48353C1.97197 2.49368 1.72521 3.02646 1.74295 3.67357C1.7607 4.32069 2.03629 4.83707 2.35837 4.82692C2.68043 4.81673 2.92708 4.28395 2.90933 3.63686C2.89158 2.98974 2.61613 2.47339 2.29404 2.48353Z" fill="currentColor"/></svg></div>
@@ -1102,6 +1128,35 @@ dot.style.opacity = '1';
 
   if (mq.matches) start();
   else cvs.style.display = 'none';
+})();
+
+/* ---- CLAY EARTH PARALLAX ---- */
+(function () {
+  const el      = document.getElementById('clay-earth-parallax');
+  const about   = document.getElementById('about');
+  const contact = document.getElementById('contact');
+  if (!el || !about || !contact) return;
+
+  function update() {
+    const sy         = window.scrollY;
+    const vh         = window.innerHeight;
+    const showStart  = about.offsetTop - vh * 0.8;
+    const showEnd    = contact.offsetTop + contact.offsetHeight;
+
+    if (sy < showStart || sy > showEnd) {
+      el.style.opacity = '0';
+      return;
+    }
+    el.style.opacity = '1';
+
+    // スクロールより0.35倍遅めに動く（1000px下からスタート）
+    const progress = sy - showStart;
+    el.style.transform = `translateY(${1000 - progress * 0.35}px)`;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 })();
 </script>
 </body>
