@@ -193,7 +193,9 @@
 
   /* ---- OVERLAY MENU ---- */
   #overlay-menu {
-    position: fixed; inset: 0; z-index: 150;
+    position: absolute; /* fixedをやめてiOS Safari visual viewport clippingを回避 */
+    left: 0; top: 0; width: 100%; height: 100vh; /* JSでscrollY/innerHeightを上書き */
+    z-index: 150;
     background: var(--overlay-bg);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1010,6 +1012,13 @@ dot.style.opacity = '1';
   const overlay = document.getElementById('overlay-menu');
 
   ham.addEventListener('click', () => {
+    const isOpening = !overlay.classList.contains('open');
+    if (isOpening) {
+      // 開く瞬間にビジュアルビューポートの位置・サイズをセット
+      // → URLバー表示中でもクロップされなくなる
+      overlay.style.top    = window.scrollY + 'px';
+      overlay.style.height = window.innerHeight + 'px';
+    }
     ham.classList.toggle('open');
     overlay.classList.toggle('open');
   });
