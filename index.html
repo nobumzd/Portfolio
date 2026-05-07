@@ -515,7 +515,7 @@
   /* ---- STARS (dark mode only) ---- */
   /* ---- CLAY EARTH PARALLAX ---- */
   #clay-earth-parallax {
-    position: fixed;
+    position: absolute; /* fixedをやめてiOS Safari visual viewport clippingを回避 */
     /* コンテンツ(max-width:900px)左端 = 50% - 450px を右端として配置 */
     left: calc(50% - 450px - 25vw);
     top: 0;
@@ -533,8 +533,8 @@
   }
 
   #stars-canvas {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
+    position: absolute; top: 0; left: 0; /* fixedをやめてiOS Safari visual viewport clippingを回避 */
+    width: 100%; height: 100vh;
     pointer-events: none;
     z-index: 0;
     display: none;
@@ -1085,6 +1085,10 @@ dot.style.opacity = '1';
     ctx.fillStyle = '#080d1a';
     ctx.fillRect(0, 0, W, H);
 
+    // absoluteでfixedをシミュレート: ドキュメント上端からscrollY分だけ下にずらして
+    // ビジュアルビューポートの呪いを回避
+    cvs.style.transform = 'translateY(' + window.scrollY + 'px)';
+
     const sy = window.scrollY;
     for (const s of stars) {
       const oy    = (sy * s.speed) % H;
@@ -1149,11 +1153,14 @@ dot.style.opacity = '1';
     }
     el.style.opacity = '1';
 
-    // スクロールより0.35倍遅めに動く（モバイルは300px、PCは1000px下からスタート）
+    // absoluteでfixedをシミュレート:
+    // ビューポート内の見かけ位置 = startOffset - progress * 0.35
+    // ドキュメント座標 = scrollY + ビューポート内の見かけ位置
     const isMobile = window.innerWidth <= 768;
     const startOffset = isMobile ? 750 : 1000;
     const progress = sy - showStart;
-    el.style.transform = `translateY(${startOffset - progress * 0.35}px)`;
+    const viewportY = startOffset - progress * 0.35;
+    el.style.transform = `translateY(${sy + viewportY}px)`;
   }
 
   window.addEventListener('scroll', update, { passive: true });
