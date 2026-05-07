@@ -1151,7 +1151,7 @@ dot.style.opacity = '1';
 
     // スクロールより0.35倍遅めに動く（モバイルは300px、PCは1000px下からスタート）
     const isMobile = window.innerWidth <= 768;
-    const startOffset = isMobile ? 300 : 1000;
+    const startOffset = isMobile ? 0 : 1000;
     const progress = sy - showStart;
     el.style.transform = `translateY(${startOffset - progress * 0.35}px)`;
   }
