@@ -186,9 +186,9 @@
 
   /* ---- OVERLAY MENU (カードスタイル) ---- */
   #overlay-menu {
-    position: absolute;       /* fixedをやめてiOS clipping回避 */
+    position: fixed;          /* カードサイズなら端に触れないのでfixed OK */
     left: 50%;
-    top: 50vh;                /* JSでscrollY + innerHeight/2 に上書き */
+    top: 50%;
     transform: translate(-50%, -50%) scale(0.92);
     width: min(320px, 82vw);
     padding: 48px 32px 36px;
@@ -1013,12 +1013,6 @@ dot.style.opacity = '1';
   const overlay = document.getElementById('overlay-menu');
 
   ham.addEventListener('click', () => {
-    const isOpening = !overlay.classList.contains('open');
-    if (isOpening) {
-      // 開く瞬間のビューポート中央にカードをスナップ
-      // position:absolute なのでscrollY + innerHeight/2 が画面中央
-      overlay.style.top = (window.scrollY + window.innerHeight / 2) + 'px';
-    }
     ham.classList.toggle('open');
     overlay.classList.toggle('open');
   });
