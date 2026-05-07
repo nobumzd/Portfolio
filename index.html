@@ -522,7 +522,7 @@
     width: 45vw;
     pointer-events: none;
     z-index: 0;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.8s ease;
     will-change: transform;
   }
@@ -1143,7 +1143,7 @@ dot.style.opacity = '1';
     const showStart  = about.offsetTop - vh * 0.8;
     const showEnd    = contact.offsetTop + contact.offsetHeight;
 
-    if (sy < showStart || sy > showEnd) {
+    if (sy > showEnd) {
       el.style.opacity = '0';
       return;
     }
