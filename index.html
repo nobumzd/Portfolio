@@ -521,12 +521,11 @@
     position: absolute; top: 0;
     width: 384px;                   /* 固定サイズ（viewport幅に依存しない） */
     pointer-events: none; z-index: 2;
-    opacity: 1; display: none;
+    opacity: 1;
   }
   .cloud-p video { width: 100%; height: auto; display: block; }
-  .cloud-p-L { left: calc(50% - 450px - 260px); }  /* コンテンツ左端の260px外側 */
-  .cloud-p-R { left: calc(50% + 450px - 60px);  }  /* コンテンツ右端から60pxめり込み */
-  @media (prefers-color-scheme: dark) { .cloud-p { display: block; } }
+  .cloud-p-L { left: calc(50% - 450px - 260px); }
+  .cloud-p-R { left: calc(50% + 450px - 60px);  }
   @media (max-width: 768px) {
     .cloud-p   { width: 264px; }
     .cloud-p-L { left: -50px; }
