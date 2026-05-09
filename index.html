@@ -519,7 +519,7 @@
   /* ---- CLOUD PARALLAX (dark mode only) ---- */
   .cloud-p {
     position: absolute; top: 0;
-    width: 320px;                   /* 固定サイズ（viewport幅に依存しない） */
+    width: 384px;                   /* 固定サイズ（viewport幅に依存しない） */
     pointer-events: none; z-index: 2;
     opacity: 1; display: none;
   }
@@ -528,7 +528,7 @@
   .cloud-p-R { left: calc(50% + 450px - 60px);  }  /* コンテンツ右端から60pxめり込み */
   @media (prefers-color-scheme: dark) { .cloud-p { display: block; } }
   @media (max-width: 768px) {
-    .cloud-p   { width: 220px; }
+    .cloud-p   { width: 264px; }
     .cloud-p-L { left: -50px; }
     .cloud-p-R { left: auto; right: -50px; }
   }
@@ -1165,7 +1165,7 @@ dot.style.opacity = '1';
 
 /* ---- CLOUD PARALLAX ---- */
 (function () {
-  const SPEED = 1.1;
+  const SPEED = 1.3;
 
   // [id, sectionId, viewportY_PC, viewportY_SP]
   // viewportY = セクションが画面中央にきたとき、雲がビューポートのどこに見えるか(px)
