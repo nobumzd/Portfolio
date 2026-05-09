@@ -519,18 +519,18 @@
   /* ---- CLOUD PARALLAX (dark mode only) ---- */
   .cloud-p {
     position: absolute; top: 0;
-    width: 40vw;
+    width: 320px;                   /* 固定サイズ（viewport幅に依存しない） */
     pointer-events: none; z-index: 2;
     opacity: 1; display: none;
   }
   .cloud-p video { width: 100%; height: auto; display: block; }
-  .cloud-p-L { left: calc(50% - 450px - 12vw); }
-  .cloud-p-R { left: calc(50% + 450px - 28vw); }
+  .cloud-p-L { left: calc(50% - 450px - 260px); }  /* コンテンツ左端の260px外側 */
+  .cloud-p-R { left: calc(50% + 450px - 60px);  }  /* コンテンツ右端から60pxめり込み */
   @media (prefers-color-scheme: dark) { .cloud-p { display: block; } }
   @media (max-width: 768px) {
-    .cloud-p   { width: 55vw; }
-    .cloud-p-L { left: -12vw; }
-    .cloud-p-R { left: auto; right: -12vw; }
+    .cloud-p   { width: 220px; }
+    .cloud-p-L { left: -50px; }
+    .cloud-p-R { left: auto; right: -50px; }
   }
 
   /* ---- CLAY EARTH PARALLAX ---- */
@@ -1165,21 +1165,26 @@ dot.style.opacity = '1';
 
 /* ---- CLOUD PARALLAX ---- */
 (function () {
-  const SPEED = 0.88; /* 0.8 × 1.1 */
+  const SPEED = 1.1;
+
+  // [id, sectionId, viewportY_PC, viewportY_SP]
+  // viewportY = セクションが画面中央にきたとき、雲がビューポートのどこに見えるか(px)
   const CFG = [
-    ['cloud-1', 'hero',    350, 220],
-    ['cloud-2', 'about',   280, 180],
-    ['cloud-3', 'outline', 320, 200],
-    ['cloud-4', 'works',   260, 160],
-    ['cloud-5', 'works',   800, 520],
-    ['cloud-6', 'contact', 300, 190],
+    ['cloud-1', 'hero',    320, 210],
+    ['cloud-2', 'about',   360, 230],
+    ['cloud-3', 'outline', 320, 210],
+    ['cloud-4', 'works',   280, 180],
+    ['cloud-5', 'works',   460, 300],
+    ['cloud-6', 'contact', 340, 220],
   ];
-  const clouds = CFG.map(([id, sec, offPC, offSP]) => ({
-    el: document.getElementById(id),
-    sec: document.getElementById(sec),
-    offPC, offSP,
+
+  const clouds = CFG.map(([id, secId, vpPC, vpSP]) => ({
+    el:  document.getElementById(id),
+    sec: document.getElementById(secId),
+    vpPC, vpSP,
   })).filter(c => c.el && c.sec);
 
+  // 再生タイミングをランダムにずらす
   clouds.forEach(c => {
     const v = c.el.querySelector('video');
     if (!v) return;
@@ -1188,21 +1193,21 @@ dot.style.opacity = '1';
     }, { once: true });
   });
 
+  // 「最初からそこにある」位置計算:
+  //   ビューポート位置 VP = P0 - SPEED * sy  (雲はSPEED倍の速さで上へ流れる)
+  //   セクション中央(sy = syCenter)のとき VP = vp になるよう P0 を決める
+  //   P0 = vp + SPEED * syCenter
+  //   syCenter = max(0, sec.offsetTop - vh/2)  ← heroは0起点
   function update() {
     const sy  = window.scrollY;
     const vh  = window.innerHeight;
     const mob = window.innerWidth <= 768;
     clouds.forEach(c => {
-      const start = c.sec.offsetTop - vh * 1.5;
-      const end   = c.sec.offsetTop + c.sec.offsetHeight + vh;
-      if (sy < start || sy > end) {
-        // 範囲外は即座に非表示（transitionなしなのでフェードしない）
-        c.el.style.opacity = '0';
-        return;
-      }
-      c.el.style.opacity = '1';
-      const vy = (mob ? c.offSP : c.offPC) - (sy - start) * SPEED;
-      c.el.style.transform = `translateY(${sy + vy}px)`;
+      const syCenter = Math.max(0, c.sec.offsetTop - vh / 2);
+      const vp       = mob ? c.vpSP : c.vpPC;
+      const P0       = vp + SPEED * syCenter;
+      // transform = P0 - (SPEED-1)*sy  →  VP = P0 - SPEED*sy
+      c.el.style.transform = `translateY(${P0 - (SPEED - 1) * sy}px)`;
     });
   }
 
