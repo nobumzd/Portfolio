@@ -254,7 +254,7 @@ body {
 
 @media (prefers-color-scheme: light) {
   #hero {
-    background: url('../img/sea_gradation.png') center center / cover no-repeat;
+    background: url('../img/sea_gradation2.png') center center / cover no-repeat;
   }
   #hero > *:not(.hero-scroll-hint) { position: relative; z-index: 1; }
   #hero > .hero-scroll-hint { position: absolute; z-index: 1; }
