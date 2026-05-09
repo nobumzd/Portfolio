@@ -516,6 +516,23 @@
   }
 
   /* ---- STARS (dark mode only) ---- */
+  /* ---- CLOUD PARALLAX (dark mode only) ---- */
+  .cloud-p {
+    position: absolute; top: 0;
+    width: 40vw;
+    pointer-events: none; z-index: 2;
+    opacity: 1; display: none;
+  }
+  .cloud-p video { width: 100%; height: auto; display: block; }
+  .cloud-p-L { left: calc(50% - 450px - 12vw); }
+  .cloud-p-R { left: calc(50% + 450px - 28vw); }
+  @media (prefers-color-scheme: dark) { .cloud-p { display: block; } }
+  @media (max-width: 768px) {
+    .cloud-p   { width: 55vw; }
+    .cloud-p-L { left: -12vw; }
+    .cloud-p-R { left: auto; right: -12vw; }
+  }
+
   /* ---- CLAY EARTH PARALLAX ---- */
   #clay-earth-parallax {
     position: absolute; /* fixedをやめてiOS Safari visual viewport clippingを回避 */
@@ -577,6 +594,15 @@
 
 <!-- STARS CANVAS (dark mode) -->
 <canvas id="stars-canvas" aria-hidden="true"></canvas>
+
+<!-- CLOUDS (dark mode / alternating L-R down the page) -->
+<div class="cloud-p cloud-p-R" id="cloud-1" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+<div class="cloud-p cloud-p-L" id="cloud-2" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+<div class="cloud-p cloud-p-R" id="cloud-3" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+<div class="cloud-p cloud-p-L" id="cloud-4" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+<div class="cloud-p cloud-p-R" id="cloud-5" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+<div class="cloud-p cloud-p-L" id="cloud-6" aria-hidden="true"><video autoplay muted loop playsinline><source src="movie/cloud/cloud_alpha2.mov" type="video/mp4; codecs=hvc1"></video></div>
+
 <div id="clay-earth-parallax" aria-hidden="true">
   <video autoplay loop muted playsinline>
     <source src="movie/clay_earth_transparent.mov" type='video/mp4; codecs="hvc1"'>
@@ -1135,6 +1161,49 @@ dot.style.opacity = '1';
 
   if (mq.matches) start();
   else cvs.style.display = 'none';
+})();
+
+/* ---- CLOUD PARALLAX ---- */
+(function () {
+  const SPEED = 0.8;
+  const CFG = [
+    ['cloud-1', 'hero',    350, 220],
+    ['cloud-2', 'about',   280, 180],
+    ['cloud-3', 'outline', 320, 200],
+    ['cloud-4', 'works',   260, 160],
+    ['cloud-5', 'works',   800, 520],
+    ['cloud-6', 'contact', 300, 190],
+  ];
+  const clouds = CFG.map(([id, sec, offPC, offSP]) => ({
+    el: document.getElementById(id),
+    sec: document.getElementById(sec),
+    offPC, offSP,
+  })).filter(c => c.el && c.sec);
+
+  clouds.forEach(c => {
+    const v = c.el.querySelector('video');
+    if (!v) return;
+    v.addEventListener('canplay', () => {
+      v.currentTime = Math.random() * (v.duration || 6);
+    }, { once: true });
+  });
+
+  function update() {
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const mob = window.innerWidth <= 768;
+    clouds.forEach(c => {
+      const start = c.sec.offsetTop - vh * 1.5;
+      const end   = c.sec.offsetTop + c.sec.offsetHeight + vh;
+      if (sy < start || sy > end) return;
+      const vy = (mob ? c.offSP : c.offPC) - (sy - start) * SPEED;
+      c.el.style.transform = `translateY(${sy + vy}px)`;
+    });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
 })();
 
 /* ---- CLAY EARTH PARALLAX ---- */
