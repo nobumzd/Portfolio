@@ -306,7 +306,6 @@
   const SPEED = 1.3;
 
   const CFG = [
-    ['cloud-1', 'hero',    320, 210],
     ['cloud-2', 'about',   360, 230],
     ['cloud-3', 'outline', 320, 210],
     ['cloud-4', 'works',   280, 180],
