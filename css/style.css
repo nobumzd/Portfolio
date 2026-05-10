@@ -635,5 +635,5 @@ footer.in { opacity: 1; }
 
   .logo-area { width: 160px; height: 160px; }
   * { cursor: auto !important; }
-  #cursor-ring, #cursor-dot { display: none; }
+  #cursor-ring, #cursor-dot, #cursor-hand { display: none; }
 }
