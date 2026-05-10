@@ -164,11 +164,11 @@ a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
 #hamburger span {
   display: block; width: 24px; height: 1.5px;
   background: var(--text);
-  transition: transform 0.4s ease, opacity 0.15s ease;
   transform-origin: center;
+  transition: transform 0.4s ease, opacity 0.25s ease;
 }
 #hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-#hamburger.open span:nth-child(2) { opacity: 0; transition: opacity 0.1s ease; }
+#hamburger.open span:nth-child(2) { opacity: 0; } /* transitionはbase側で統一 */
 #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 /* ---- OVERLAY CLOSE BUTTON ---- */
