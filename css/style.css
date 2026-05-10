@@ -459,6 +459,33 @@ body {
 .work-card:hover .work-img-wrap img { transform: scale(1.06); }
 .work-img-wrap { overflow: hidden; aspect-ratio: 4/3; background: var(--bg2); position: relative; }
 .work-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
+
+/* ---- CAROUSEL ---- */
+.carousel-slides {
+  display: flex; height: 100%;
+  transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.carousel-slides img {
+  width: 100%; height: 100%; object-fit: cover;
+  flex-shrink: 0; transition: none;
+}
+.work-card:hover .carousel-slides img { transform: none; }
+.carousel-bars {
+  position: absolute; bottom: 10px; left: 10px; right: 10px;
+  display: flex; gap: 4px; z-index: 5; pointer-events: none;
+}
+.c-bar {
+  flex: 1; height: 2px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 2px; overflow: hidden;
+}
+.c-bar-fill {
+  height: 100%; width: 0;
+  background: #fff; border-radius: 2px;
+}
+.c-bar.done .c-bar-fill { width: 100%; }
+.c-bar.active .c-bar-fill { animation: cBarFill 3.5s linear forwards; }
+@keyframes cBarFill { to { width: 100%; } }
 .work-img-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
