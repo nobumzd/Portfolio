@@ -386,11 +386,8 @@
     const barsEl = document.createElement('div');
     barsEl.className = 'carousel-bars';
     const bars = images.map(() => {
-      const bar  = document.createElement('div');
+      const bar = document.createElement('div');
       bar.className = 'c-bar';
-      const fill = document.createElement('div');
-      fill.className = 'c-bar-fill';
-      bar.appendChild(fill);
       barsEl.appendChild(bar);
       return bar;
     });
@@ -402,10 +399,7 @@
       cur = (i + images.length) % images.length;
       track.style.transform = `translateX(-${cur * 100}%)`;
       bars.forEach((b, idx) => {
-        const fill = b.querySelector('.c-bar-fill');
-        b.classList.remove('active','done');
-        fill.style.animation = 'none';
-        fill.offsetHeight;
+        b.classList.remove('active', 'done');
         if (idx < cur)        b.classList.add('done');
         else if (idx === cur) b.classList.add('active');
       });
