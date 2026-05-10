@@ -76,11 +76,10 @@ body {
 }
 #cursor-hand {
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
-  width: 22px; height: 26px;
-  transform: translate(-30%, -15%);
+  width: 30px; height: 45px;
+  transform: translate(-20%, -10%);
   opacity: 0;
   transition: opacity 0.15s ease;
-  color: var(--cursor-color);
 }
 .cursor-bubble {
   position: fixed; pointer-events: none; z-index: 9998;
