@@ -1,3 +1,17 @@
+/* ---- HERO BACKGROUND PRELOAD (light mode only) ---- */
+(function () {
+  if (!window.matchMedia('(prefers-color-scheme: light)').matches) return;
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+  const img = new Image();
+  img.src = 'img/sea_gradation2.png';
+  const reveal = () => hero.classList.add('bg-ready');
+  img.onload  = reveal;
+  img.onerror = reveal; // 失敗しても表示する
+  // 3秒経ってもロードされなければ強制表示
+  setTimeout(reveal, 3000);
+})();
+
 (function(){
   /* ---- CURSOR ---- */
   const dot  = document.getElementById('cursor-dot');
