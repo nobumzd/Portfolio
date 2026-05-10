@@ -589,8 +589,8 @@ footer.in { opacity: 1; }
 }
 @media (max-width: 768px) {
   .cloud-p   { width: 264px; }
-  .cloud-p-L { left: -50px; }
-  .cloud-p-R { left: auto; right: -50px; }
+  .cloud-p-L { left: 0; }       /* ビューポート左端に揃える（はみ出しなし） */
+  .cloud-p-R { left: auto; right: 0; } /* ビューポート右端に揃える（はみ出しなし） */
 }
 
 /* ---- CLAY EARTH PARALLAX ---- */
@@ -628,7 +628,7 @@ footer.in { opacity: 1; }
 
 /* ===================== MOBILE ===================== */
 @media (max-width: 768px) {
-  html, body { overflow-x: hidden; touch-action: pan-y; } /* 横スクロール禁止・縦のみ許可 */
+  html, body { overflow-x: hidden; }
   #header { padding: 18px 24px; }
   .header-nav { display: none; }
   #hamburger { display: flex; }
