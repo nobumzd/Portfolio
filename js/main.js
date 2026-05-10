@@ -303,7 +303,8 @@
 
 /* ---- CLOUD PARALLAX ---- */
 (function () {
-  const SPEED = 1.7;
+  const SPEED    = 1.7; // PC
+  const SPEED_SP = 2.0; // スマホ
 
   const CFG = [
     ['cloud-2', 'about',   360, 230],
@@ -334,12 +335,11 @@
     clouds.forEach(c => {
       const syCenter = Math.max(0, c.sec.offsetTop - vh / 2);
       const vp       = mob ? c.vpSP : c.vpPC;
-      // fixed(スマホ): ビューポート基準なので(SPEED-1)*syCenter
-      // absolute(PC): ドキュメント基準なのでSPEED*syCenter
+      const spd      = mob ? SPEED_SP : SPEED;
       const P0 = mob
-        ? vp + (SPEED - 1) * syCenter
-        : vp + SPEED * syCenter;
-      c.el.style.transform = `translateY(${P0 - (SPEED - 1) * sy}px)`;
+        ? vp + (spd - 1) * syCenter
+        : vp + spd * syCenter;
+      c.el.style.transform = `translateY(${P0 - (spd - 1) * sy}px)`;
     });
   }
 
