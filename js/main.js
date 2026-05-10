@@ -413,9 +413,10 @@
 
     const barsEl = document.createElement('div');
     barsEl.className = 'carousel-bars';
-    const bars = images.map(() => {
+    const bars = images.map((_, idx) => {
       const bar = document.createElement('div');
       bar.className = 'c-bar';
+      bar.addEventListener('click', () => goTo(idx));
       barsEl.appendChild(bar);
       return bar;
     });
