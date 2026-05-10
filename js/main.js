@@ -353,3 +353,81 @@
   window.addEventListener('resize', update, { passive: true });
   update();
 })();
+
+/* ---- CAROUSEL ---- */
+(function () {
+  const DURATION = 3500;
+  const MAX      = 10;
+
+  function probe(prefix, idx, found, cb) {
+    if (idx > MAX) { cb(found); return; }
+    const img = new Image();
+    img.src = `img/works/${prefix}${String(idx).padStart(2,'0')}.png`;
+    img.onload  = () => { found.push(img.src); probe(prefix, idx+1, found, cb); };
+    img.onerror = () => cb(found);
+  }
+
+  function init(card, images) {
+    const wrap = card.querySelector('.work-img-wrap');
+    if (!wrap) return;
+
+    const track = document.createElement('div');
+    track.className = 'carousel-slides';
+    images.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src; img.alt = '';
+      track.appendChild(img);
+    });
+    wrap.innerHTML = '';
+    wrap.appendChild(track);
+
+    if (images.length === 1) return;
+
+    const barsEl = document.createElement('div');
+    barsEl.className = 'carousel-bars';
+    const bars = images.map(() => {
+      const bar  = document.createElement('div');
+      bar.className = 'c-bar';
+      const fill = document.createElement('div');
+      fill.className = 'c-bar-fill';
+      bar.appendChild(fill);
+      barsEl.appendChild(bar);
+      return bar;
+    });
+    wrap.appendChild(barsEl);
+
+    let cur = 0, timer = null;
+
+    function goTo(i) {
+      cur = (i + images.length) % images.length;
+      track.style.transform = `translateX(-${cur * 100}%)`;
+      bars.forEach((b, idx) => {
+        const fill = b.querySelector('.c-bar-fill');
+        b.classList.remove('active','done');
+        fill.style.animation = 'none';
+        fill.offsetHeight;
+        if (idx < cur)        b.classList.add('done');
+        else if (idx === cur) b.classList.add('active');
+      });
+      clearTimeout(timer);
+      timer = setTimeout(() => goTo(cur + 1), DURATION);
+    }
+
+    let tx = 0;
+    wrap.addEventListener('touchstart', e => { tx = e.touches[0].clientX; clearTimeout(timer); }, {passive:true});
+    wrap.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - tx;
+      goTo(Math.abs(dx) > 40 ? (dx < 0 ? cur+1 : cur-1) : cur);
+    });
+
+    goTo(0);
+  }
+
+  document.querySelectorAll('.work-card').forEach(card => {
+    const img = card.querySelector('.work-img-wrap img');
+    if (!img) return;
+    const file   = img.src.split('/').pop();
+    const prefix = file.replace(/\d+\.\w+$/, '');
+    probe(prefix, 2, [img.src], images => init(card, images));
+  });
+})();
