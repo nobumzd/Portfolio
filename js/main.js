@@ -303,7 +303,7 @@
 
 /* ---- CLOUD PARALLAX ---- */
 (function () {
-  const SPEED = 1.3;
+  const SPEED = 1.7;
 
   const CFG = [
     ['cloud-2', 'about',   360, 230],
