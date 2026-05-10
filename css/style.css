@@ -200,12 +200,18 @@ a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   display: flex; flex-direction: column; align-items: center; gap: 28px;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  opacity: 0; pointer-events: none; visibility: hidden;
+  /* visibilityはopacity完了後に非表示（閉じる時のタッチブロック防止） */
+  transition: opacity 0.4s ease,
+              transform 0.4s cubic-bezier(0.34,1.56,0.64,1),
+              visibility 0s linear 0.4s;
 }
 #overlay-menu.open {
-  opacity: 1; pointer-events: all;
+  opacity: 1; pointer-events: all; visibility: visible;
   transform: translate(-50%, -50%) scale(1);
+  transition: opacity 0.4s ease,
+              transform 0.4s cubic-bezier(0.34,1.56,0.64,1),
+              visibility 0s; /* 開く時はvisibilityを即座にvisible */
 }
 .overlay-menu-link {
   font-family: 'DM Sans', sans-serif; font-size: 2rem; font-weight: 300;
