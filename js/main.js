@@ -359,12 +359,24 @@
   const DURATION = 3500;
   const MAX      = 10;
 
+  const EXTS = ['webp', 'jpg', 'jpeg', 'png']; // 試す順番
+
+  // 1つの番号に対して複数拡張子を順に試す
+  function probeOne(prefix, idx, exts, cb) {
+    if (exts.length === 0) { cb(null); return; }
+    const img = new Image();
+    img.src = `img/works/${prefix}${String(idx).padStart(2,'0')}.${exts[0]}`;
+    img.onload  = () => cb(img.src);
+    img.onerror = () => probeOne(prefix, idx, exts.slice(1), cb);
+  }
+
+  // 番号を増やしながら連番探索
   function probe(prefix, idx, found, cb) {
     if (idx > MAX) { cb(found); return; }
-    const img = new Image();
-    img.src = `img/works/${prefix}${String(idx).padStart(2,'0')}.png`;
-    img.onload  = () => { found.push(img.src); probe(prefix, idx+1, found, cb); };
-    img.onerror = () => cb(found);
+    probeOne(prefix, idx, EXTS, src => {
+      if (src) { found.push(src); probe(prefix, idx+1, found, cb); }
+      else cb(found); // どの拡張子も見つからなければ終了
+    });
   }
 
   function init(card, images) {
