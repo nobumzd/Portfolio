@@ -569,9 +569,8 @@ footer {
   text-align: center; padding: 40px 48px;
   font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.12em;
   border-top: 0.5px solid var(--border);
-  opacity: 0; transition: opacity 0.8s ease;
+  opacity: 1;
 }
-footer.in { opacity: 1; }
 
 /* ===================== TABLET ===================== */
 @media (max-width: 1024px) {
