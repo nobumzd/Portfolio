@@ -55,6 +55,7 @@ body {
   margin: 0 auto;
   overflow-x: clip;
   overscroll-behavior: contain;
+  position: relative; /* absoluteの雲をbody基準にしてoverflow clippingを有効化 */
 }
 
 @media (min-width: 1920px) {
@@ -159,11 +160,11 @@ body {
 #hamburger span {
   display: block; width: 24px; height: 1.5px;
   background: var(--text);
-  transition: transform 0.4s ease, opacity 0.3s;
+  transition: transform 0.4s ease, opacity 0.15s ease;
   transform-origin: center;
 }
 #hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-#hamburger.open span:nth-child(2) { opacity: 0; }
+#hamburger.open span:nth-child(2) { opacity: 0; transition: opacity 0.1s ease; }
 #hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
 /* ---- OVERLAY CLOSE BUTTON ---- */
