@@ -370,7 +370,7 @@
 
 /* ---- CAROUSEL ---- */
 (function () {
-  const DURATION = 3500;
+  const DURATION = 5000;
   const MAX      = 10;
 
   const EXTS = ['webp', 'jpg', 'jpeg', 'png']; // 試す順番
@@ -406,6 +406,8 @@
     });
     wrap.innerHTML = '';
     wrap.appendChild(track);
+    // 最初の画像を表示
+    track.querySelector('img')?.classList.add('c-active');
 
     if (images.length === 1) return;
 
@@ -419,11 +421,13 @@
     });
     wrap.appendChild(barsEl);
 
+    const imgs = Array.from(track.querySelectorAll('img'));
     let cur = 0, timer = null;
 
     function goTo(i) {
       cur = (i + images.length) % images.length;
-      track.style.transform = `translateX(-${cur * 100}%)`;
+      // ディゾルブ: opacityで切り替え
+      imgs.forEach((img, idx) => img.classList.toggle('c-active', idx === cur));
       bars.forEach((b, idx) => {
         b.classList.remove('active', 'done');
         if (idx < cur)        b.classList.add('done');
