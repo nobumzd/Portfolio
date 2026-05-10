@@ -467,7 +467,7 @@ body {
 .work-card:nth-child(3) { transition-delay: 0.3s; }
 .work-card:nth-child(4) { transition-delay: 0.45s; }
 .work-card:hover .work-img-wrap img { transform: scale(1.06); }
-.work-img-wrap { overflow: hidden; aspect-ratio: 4/3; background: var(--bg2); position: relative; }
+.work-img-wrap { overflow: hidden; aspect-ratio: 4/3; background: var(--bg2); position: relative; touch-action: pan-y; }
 .work-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s ease; }
 
 /* ---- CAROUSEL ---- */
@@ -617,6 +617,7 @@ footer.in { opacity: 1; }
 
 /* ===================== MOBILE ===================== */
 @media (max-width: 768px) {
+  html, body { overflow-x: hidden; } /* 横スクロール完全禁止 */
   #header { padding: 18px 24px; }
   .header-nav { display: none; }
   #hamburger { display: flex; }
