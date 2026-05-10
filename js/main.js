@@ -174,23 +174,32 @@
   /* ---- HAMBURGER / OVERLAY ---- */
   const ham     = document.getElementById('hamburger');
   const overlay = document.getElementById('overlay-menu');
+  const midBar  = ham.querySelector('span:nth-child(2)');
+
+  function openMenu() {
+    ham.classList.add('open');
+    overlay.classList.add('open');
+    // JSで直接opacity制御（iOS Safari CSS transition対策）
+    midBar.style.transition = 'opacity 0.25s ease';
+    midBar.style.opacity = '0';
+  }
+
+  function closeMenu() {
+    ham.classList.remove('open');
+    overlay.classList.remove('open');
+    midBar.style.transition = 'opacity 0.25s ease';
+    midBar.style.opacity = '1';
+  }
 
   ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    overlay.classList.toggle('open');
+    ham.classList.contains('open') ? closeMenu() : openMenu();
   });
 
   overlay.querySelectorAll('.overlay-menu-link').forEach(link => {
-    link.addEventListener('click', () => {
-      ham.classList.remove('open');
-      overlay.classList.remove('open');
-    });
+    link.addEventListener('click', () => closeMenu());
   });
 
-  document.getElementById('overlay-close').addEventListener('click', () => {
-    ham.classList.remove('open');
-    overlay.classList.remove('open');
-  });
+  document.getElementById('overlay-close').addEventListener('click', () => closeMenu());
 
   /* ---- SMOOTH SCROLL ---- */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
