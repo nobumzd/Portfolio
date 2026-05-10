@@ -336,7 +336,7 @@ a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
 
 .hero-title {
   font-family: 'Chango', sans-serif;
-  font-size: clamp(3rem, 8vw, 8rem);
+  font-size: clamp(3.6rem, 9.6vw, 9.6rem);
   font-weight: 300; line-height: 1.05;
   letter-spacing: -0.01em;
   margin-bottom: 28px;
