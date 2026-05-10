@@ -334,7 +334,11 @@
     clouds.forEach(c => {
       const syCenter = Math.max(0, c.sec.offsetTop - vh / 2);
       const vp       = mob ? c.vpSP : c.vpPC;
-      const P0       = vp + SPEED * syCenter;
+      // fixed(スマホ): ビューポート基準なので(SPEED-1)*syCenter
+      // absolute(PC): ドキュメント基準なのでSPEED*syCenter
+      const P0 = mob
+        ? vp + (SPEED - 1) * syCenter
+        : vp + SPEED * syCenter;
       c.el.style.transform = `translateY(${P0 - (SPEED - 1) * sy}px)`;
     });
   }
