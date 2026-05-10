@@ -465,13 +465,15 @@ body {
 
 /* ---- CAROUSEL ---- */
 .carousel-slides {
-  display: flex; height: 100%;
-  transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94);
+  position: relative; height: 100%;
 }
 .carousel-slides img {
+  position: absolute; top: 0; left: 0;
   width: 100%; height: 100%; object-fit: cover;
-  flex-shrink: 0; transition: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
+.carousel-slides img.c-active { opacity: 1; }
 .work-card:hover .carousel-slides img { transform: none; }
 .carousel-bars {
   position: absolute; bottom: 12px; left: 0; right: 0;
