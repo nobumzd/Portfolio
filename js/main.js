@@ -304,7 +304,7 @@
 /* ---- CLOUD PARALLAX ---- */
 (function () {
   const SPEED    = 1.7; // PC
-  const SPEED_SP = 2.5; // スマホ
+  const SPEED_SP = 2.2; // スマホ
 
   const CFG = [
     ['cloud-2', 'about',   360, 230],
