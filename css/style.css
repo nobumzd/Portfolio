@@ -64,6 +64,10 @@ body {
 
 /* ---- CURSOR ---- */
 * { cursor: none !important; }
+/* リンク・ボタン上はOSのデフォルトポインターを使用 */
+a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
+  cursor: pointer !important;
+}
 #cursor-dot {
   position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
   width: 18px; height: 21px;
