@@ -15,7 +15,6 @@
 (function(){
   /* ---- CURSOR ---- */
   const dot  = document.getElementById('cursor-dot');
-  const hand = document.getElementById('cursor-hand');
   const POINTER_EL = 'a, button, .work-card, .c-bar, [role="button"], .cta-btn, label, select, input';
   let mx = -200, my = -200;
   let isMoving = false;
@@ -30,10 +29,8 @@
   document.addEventListener('mousemove', e => {
     mx = e.clientX; my = e.clientY;
     const isPointer = !!e.target.closest(POINTER_EL);
-    dot.style.opacity  = isPointer ? '0' : '1';
-    hand.style.opacity = isPointer ? '1' : '0';
-    hand.style.left = mx + 'px'; hand.style.top = my + 'px';
-    dot.style.left  = mx + 'px'; dot.style.top  = my + 'px';
+    dot.style.opacity = isPointer ? '0' : '1';
+    dot.style.left = mx + 'px'; dot.style.top = my + 'px';
 
     if (prevX !== null && prevY !== null) {
       const dx = mx - prevX, dy = my - prevY;
@@ -87,8 +84,7 @@
   });
 
   document.addEventListener('mouseleave', () => {
-    dot.style.opacity  = '0';
-    hand.style.opacity = '0';
+    dot.style.opacity = '0';
     clearInterval(bubbleInterval);
   });
 
@@ -178,23 +174,32 @@
   /* ---- HAMBURGER / OVERLAY ---- */
   const ham     = document.getElementById('hamburger');
   const overlay = document.getElementById('overlay-menu');
+  const midBar  = ham.querySelector('span:nth-child(2)');
+
+  function openMenu() {
+    ham.classList.add('open');
+    overlay.classList.add('open');
+    // JSで直接opacity制御（iOS Safari CSS transition対策）
+    midBar.style.transition = 'opacity 0.25s ease';
+    midBar.style.opacity = '0';
+  }
+
+  function closeMenu() {
+    ham.classList.remove('open');
+    overlay.classList.remove('open');
+    midBar.style.transition = 'opacity 0.25s ease';
+    midBar.style.opacity = '1';
+  }
 
   ham.addEventListener('click', () => {
-    ham.classList.toggle('open');
-    overlay.classList.toggle('open');
+    ham.classList.contains('open') ? closeMenu() : openMenu();
   });
 
   overlay.querySelectorAll('.overlay-menu-link').forEach(link => {
-    link.addEventListener('click', () => {
-      ham.classList.remove('open');
-      overlay.classList.remove('open');
-    });
+    link.addEventListener('click', () => closeMenu());
   });
 
-  document.getElementById('overlay-close').addEventListener('click', () => {
-    ham.classList.remove('open');
-    overlay.classList.remove('open');
-  });
+  document.getElementById('overlay-close').addEventListener('click', () => closeMenu());
 
   /* ---- SMOOTH SCROLL ---- */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
