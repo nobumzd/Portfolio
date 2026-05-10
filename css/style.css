@@ -446,9 +446,7 @@ body {
 }
 .work-card {
   border-radius: var(--radius); overflow: hidden;
-  background: var(--section-bg);
-  backdrop-filter: blur(var(--section-blur));
-  -webkit-backdrop-filter: blur(var(--section-blur));
+  background: transparent;
   border: 0.5px solid var(--border);
   opacity: 0; transform: translateY(28px);
   transition: opacity 0.8s ease, transform 0.8s ease;
@@ -466,7 +464,12 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-family: 'DM Sans', sans-serif; font-size: 4rem; font-weight: 300; color: var(--border);
 }
-.work-info { padding: 24px 28px; }
+.work-info {
+  padding: 24px 28px;
+  background: var(--section-bg);
+  backdrop-filter: blur(var(--section-blur));
+  -webkit-backdrop-filter: blur(var(--section-blur));
+}
 .work-tag { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent2); margin-bottom: 8px; }
 .work-title { font-family: 'DM Sans', sans-serif; font-size: 1.4rem; font-weight: 400; margin-bottom: 8px; }
 .work-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
