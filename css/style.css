@@ -335,7 +335,7 @@ a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
 .logo-area p { font-size: 0.7rem; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
 
 .hero-title {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Chango', sans-serif;
   font-size: clamp(3rem, 8vw, 8rem);
   font-weight: 300; line-height: 1.05;
   letter-spacing: -0.01em;
