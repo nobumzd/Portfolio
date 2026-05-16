@@ -381,15 +381,25 @@
   const DURATION = 5000;
   const MAX      = 10;
 
-  const EXTS = ['webp', 'jpg', 'jpeg', 'png']; // 試す順番
+  const EXTS       = ['webp', 'jpg', 'jpeg', 'png', 'mp4', 'mov', 'webm']; // 試す順番
+  const VIDEO_EXTS = ['mp4', 'mov', 'webm'];
 
-  // 1つの番号に対して複数拡張子を順に試す
+  // 1つの番号に対して複数拡張子を順に試す（画像はImage、動画はfetch HEAD）
   function probeOne(prefix, idx, exts, cb) {
     if (exts.length === 0) { cb(null); return; }
-    const img = new Image();
-    img.src = `img/works/${prefix}${String(idx).padStart(2,'0')}.${exts[0]}`;
-    img.onload  = () => cb(img.src);
-    img.onerror = () => probeOne(prefix, idx, exts.slice(1), cb);
+    const ext = exts[0];
+    const src = `img/works/${prefix}${String(idx).padStart(2,'0')}.${ext}`;
+    if (VIDEO_EXTS.includes(ext)) {
+      // 動画はfetchでHEADリクエストして存在確認
+      fetch(src, { method: 'HEAD' })
+        .then(r => r.ok ? cb(src) : probeOne(prefix, idx, exts.slice(1), cb))
+        .catch(() => probeOne(prefix, idx, exts.slice(1), cb));
+    } else {
+      const img = new Image();
+      img.src = src;
+      img.onload  = () => cb(src);
+      img.onerror = () => probeOne(prefix, idx, exts.slice(1), cb);
+    }
   }
 
   // 番号を増やしながら連番探索
@@ -408,14 +418,23 @@
     const track = document.createElement('div');
     track.className = 'carousel-slides';
     images.forEach(src => {
-      const img = document.createElement('img');
-      img.src = src; img.alt = '';
-      track.appendChild(img);
+      const ext = src.split('.').pop().toLowerCase();
+      let el;
+      if (VIDEO_EXTS.includes(ext)) {
+        el = document.createElement('video');
+        el.src = src; el.autoplay = true; el.muted = true;
+        el.loop = true; el.playsInline = true;
+        el.setAttribute('playsinline', '');
+      } else {
+        el = document.createElement('img');
+        el.src = src; el.alt = '';
+      }
+      track.appendChild(el);
     });
     wrap.innerHTML = '';
     wrap.appendChild(track);
-    // 最初の画像を表示
-    track.querySelector('img')?.classList.add('c-active');
+    // 最初のスライドを表示
+    track.firstElementChild?.classList.add('c-active');
 
     if (images.length === 1) return;
 

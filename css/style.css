@@ -491,13 +491,15 @@ a, button, .work-card, .c-bar, [role="button"], label, select, input, .cta-btn {
 .carousel-slides {
   position: relative; height: 100%;
 }
-.carousel-slides img {
+.carousel-slides img,
+.carousel-slides video {
   position: absolute; top: 0; left: 0;
   width: 100%; height: 100%; object-fit: cover;
   opacity: 0;
   transition: opacity 0.9s ease;
 }
-.carousel-slides img.c-active { opacity: 1; }
+.carousel-slides img.c-active,
+.carousel-slides video.c-active { opacity: 1; }
 .work-card:hover .carousel-slides img { transform: none; }
 .carousel-bars {
   position: absolute; bottom: 12px; left: 0; right: 0;
