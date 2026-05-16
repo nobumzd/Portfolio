@@ -424,7 +424,7 @@
       if (VIDEO_EXTS.includes(ext)) {
         el = document.createElement('video');
         el.src = src; el.autoplay = true; el.muted = true;
-        el.loop = true; el.playsInline = true;
+        el.loop = false; el.playsInline = true; /* 1回再生→次スライドへ */
         el.setAttribute('playsinline', '');
       } else {
         el = document.createElement('img');
