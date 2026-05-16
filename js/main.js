@@ -505,6 +505,7 @@
     if (!img) return;
     const file   = img.src.split('/').pop();
     const prefix = file.replace(/\d+\.\w+$/, '');
-    probe(prefix, 2, [img.src], images => init(card, images));
+    // index 1から全部probeする（HTMLのimgに依存せず動画も初枚目対応）
+    probe(prefix, 1, [], images => init(card, images));
   });
 })();
