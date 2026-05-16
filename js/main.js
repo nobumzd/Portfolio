@@ -450,25 +450,44 @@
     });
     wrap.appendChild(barsEl);
 
-    const slides = Array.from(track.children); // img と video 両方取得
-    let cur = 0, timer = null;
+    const slides = Array.from(track.children);
+    let cur = 0, timer = null, endedHandler = null;
 
     function goTo(i) {
       cur = (i + images.length) % images.length;
+      const current = slides[cur];
+
+      // 前の動画のendedリスナーを解除
       slides.forEach((el, idx) => {
         el.classList.toggle('c-active', idx === cur);
-        // 動画は表示時に再生・非表示時は停止
         if (el.tagName === 'VIDEO') {
-          idx === cur ? el.play().catch(()=>{}) : el.pause();
+          if (idx === cur) {
+            el.currentTime = 0;
+            el.play().catch(()=>{});
+          } else {
+            el.pause();
+          }
         }
       });
+
       bars.forEach((b, idx) => {
         b.classList.remove('active', 'done');
         if (idx < cur)        b.classList.add('done');
         else if (idx === cur) b.classList.add('active');
       });
+
       clearTimeout(timer);
-      timer = setTimeout(() => goTo(cur + 1), DURATION);
+      if (endedHandler) { slides.forEach(el => el.removeEventListener('ended', endedHandler)); }
+
+      if (current.tagName === 'VIDEO') {
+        // 動画：再生終了時に次へ
+        endedHandler = () => goTo(cur + 1);
+        current.addEventListener('ended', endedHandler, { once: true });
+      } else {
+        // 画像：固定5秒
+        endedHandler = null;
+        timer = setTimeout(() => goTo(cur + 1), DURATION);
+      }
     }
 
     let tx = 0;
