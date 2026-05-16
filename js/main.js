@@ -381,19 +381,20 @@
   const DURATION = 5000;
   const MAX      = 10;
 
-  const EXTS       = ['webp', 'jpg', 'jpeg', 'png', 'mp4', 'mov', 'webm']; // 試す順番
+  const EXTS       = ['webp', 'jpg', 'jpeg', 'png', 'mp4', 'mov', 'webm'];
   const VIDEO_EXTS = ['mp4', 'mov', 'webm'];
 
-  // 1つの番号に対して複数拡張子を順に試す（画像はImage、動画はfetch HEAD）
   function probeOne(prefix, idx, exts, cb) {
     if (exts.length === 0) { cb(null); return; }
     const ext = exts[0];
     const src = `img/works/${prefix}${String(idx).padStart(2,'0')}.${ext}`;
     if (VIDEO_EXTS.includes(ext)) {
-      // 動画はfetchでHEADリクエストして存在確認
-      fetch(src, { method: 'HEAD' })
-        .then(r => r.ok ? cb(src) : probeOne(prefix, idx, exts.slice(1), cb))
-        .catch(() => probeOne(prefix, idx, exts.slice(1), cb));
+      // 動画は<video>要素で存在確認
+      const v = document.createElement('video');
+      v.preload = 'metadata';
+      v.onloadedmetadata = () => cb(src);
+      v.onerror = () => probeOne(prefix, idx, exts.slice(1), cb);
+      v.src = src;
     } else {
       const img = new Image();
       img.src = src;
@@ -449,13 +450,18 @@
     });
     wrap.appendChild(barsEl);
 
-    const imgs = Array.from(track.querySelectorAll('img'));
+    const slides = Array.from(track.children); // img と video 両方取得
     let cur = 0, timer = null;
 
     function goTo(i) {
       cur = (i + images.length) % images.length;
-      // ディゾルブ: opacityで切り替え
-      imgs.forEach((img, idx) => img.classList.toggle('c-active', idx === cur));
+      slides.forEach((el, idx) => {
+        el.classList.toggle('c-active', idx === cur);
+        // 動画は表示時に再生・非表示時は停止
+        if (el.tagName === 'VIDEO') {
+          idx === cur ? el.play().catch(()=>{}) : el.pause();
+        }
+      });
       bars.forEach((b, idx) => {
         b.classList.remove('active', 'done');
         if (idx < cur)        b.classList.add('done');
